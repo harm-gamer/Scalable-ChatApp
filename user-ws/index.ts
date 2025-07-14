@@ -7,9 +7,9 @@ const wss = new WebSocketServer({port: 8080});
 const rooms : Record<string,Room> = {};
 
 wss.on("connection",function connection(ws) {
-
-    ws.on("message",(data) =>{
-       const parseData = JSON.parse(data.toString());
+    console.log("New client connected");
+    ws.on("message",(data:string) =>{
+       const parseData = JSON.parse(data);
        if(parseData.type == "join-room"){
         const room = parseData.room;
         if(!rooms[room]){
@@ -25,5 +25,5 @@ wss.on("connection",function connection(ws) {
         rooms[room]?.sockets.map(socket => socket.send(data));
        }
     })
-    
+
 })
